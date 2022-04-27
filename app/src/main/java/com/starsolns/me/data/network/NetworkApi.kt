@@ -13,12 +13,23 @@ import retrofit2.http.POST
 
 interface NetworkApi {
 
+    /** Using Coroutines Method*/
+
+    /** Using
+     *Coroutines to fetch Data from API
+     */
     @POST("/api/v1/user/login")
     suspend fun loginUser(@Body userLogin: UserLogin): UserResponse
 
     @POST("/api/v1/user")
     suspend fun registerUser(@Body userRegister: UserRegister): UserResponse
 
+    /** Using Call Back Method*/
+
+    /** Using
+     * @Field and @FormUrlEncoded
+     *  Using Callback to fetch data from API
+     */
     @POST("/api/v1/user")
     @FormUrlEncoded
     fun registerUserCall(
@@ -27,6 +38,11 @@ interface NetworkApi {
         @Field("phone") phone: String,
         @Field("password") password: String
     ): Call<UserResponse>
+
+    /** Using
+     * @Body without  @FormUrlEncoded
+     * while using callback to fetch data from API
+     */
 
     @POST("/api/v1/user")
     fun registerUserCall2(

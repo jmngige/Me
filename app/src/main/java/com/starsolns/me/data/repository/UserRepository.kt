@@ -15,6 +15,8 @@ class UserRepository @Inject constructor(
     private val networkApi: NetworkApi
 ) {
 
+    /** Using Coroutines */
+
     suspend fun loginUser(userLogin: UserLogin): UserResponse{
         return networkApi.loginUser(userLogin)
     }
@@ -22,6 +24,9 @@ class UserRepository @Inject constructor(
     suspend fun registerUser(userRegister: UserRegister): UserResponse{
         return networkApi.registerUser(userRegister)
     }
+
+
+    /** Using Callback Method*/
 
     fun registerUserCall(name: String, email: String, phone: String, password: String): Call<UserResponse>{
         return networkApi.registerUserCall(name, email, phone, password)

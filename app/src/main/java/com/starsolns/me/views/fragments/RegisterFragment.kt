@@ -56,8 +56,21 @@ class RegisterFragment : Fragment() {
         Log.i("TAG", "Button clicked")
         //registerUser(name,email, phone, password)
         //registerUserCall(name,email, phone, password)
-        registerUserCall2(name, email, phone, password)
+        //registerUserCall2(name, email, phone, password)
+        registerUser(name, email, phone, password)
     }
+
+    private fun registerUser(name: String, email: String, phone: String, password: String) {
+        lifecycleScope.launch {
+            mainViewModel.registerUser(UserRegister(name, email, phone, password))
+            mainViewModel.registerResponse.observe(viewLifecycleOwner){
+                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
+                Log.i("TAG", it.success.toString())
+            }
+        }
+    }
+
 
     private fun registerUserCall(name: String,email: String, phone: String, password: String) {
             mainViewModel.registerUserCall(name, email, phone, password)
@@ -79,24 +92,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-//    private fun registerUser(name: String,email: String, phone: String, password: String) {
-//     lifecycleScope.launch {
-//         mainViewModel.registerUser(UserRegister(name, email, phone, password))
-//
-//         mainViewModel.registerResponse.observe(viewLifecycleOwner){
-//             findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-//             //Toast.makeText(requireContext(), it.token, Toast.LENGTH_LONG).show()
-////             when(it){
-////                 is NetworkResult.Success -> {
-////                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-////                 }
-////                 is NetworkResult.Error -> {
-////                     Toast.makeText(requireActivity(), "Something went wrong", Toast.LENGTH_LONG).show()
-////                 }
-////             }
-//         }
-//     }
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
