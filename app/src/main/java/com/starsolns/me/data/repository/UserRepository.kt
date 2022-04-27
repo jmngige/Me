@@ -6,6 +6,7 @@ import com.starsolns.me.model.UserRegister
 import com.starsolns.me.model.UserResponse
 import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -20,6 +21,10 @@ class UserRepository @Inject constructor(
 
     suspend fun registerUser(userRegister: UserRegister): UserResponse{
         return networkApi.registerUser(userRegister)
+    }
+
+    fun registerUserCall(name: String, email: String, phone: String, password: String): Call<UserResponse>{
+        return networkApi.registerUserCall(name, email, phone, password)
     }
 
 }

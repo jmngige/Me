@@ -9,7 +9,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -39,8 +38,6 @@ object  NetworkModule {
     @Provides
     fun provideOkHttp(): OkHttpClient{
         return OkHttpClient.Builder()
-            .callTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
             .build()
     }
 

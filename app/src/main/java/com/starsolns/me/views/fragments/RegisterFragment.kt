@@ -1,6 +1,7 @@
 package com.starsolns.me.views.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,11 @@ import com.starsolns.me.data.viewmodel.MainViewModel
 import com.starsolns.me.databinding.FragmentRegisterBinding
 import com.starsolns.me.model.UserRegister
 import com.starsolns.me.util.NetworkResult
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
@@ -34,7 +37,7 @@ class RegisterFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         binding.register.setOnClickListener {
-            validateInputs()
+               validateInputs()
         }
 
 
@@ -50,23 +53,39 @@ class RegisterFragment : Fragment() {
         if(name.isEmpty() or email.isEmpty() or phone.isEmpty() or password.isEmpty()){
             Toast.makeText(requireContext(), "Please fill all the blanks", Toast.LENGTH_LONG).show()
         }
-
-        registerUser(email,name, password, phone)
+        Log.i("TAG", "Button clicked")
+        //registerUser(name,email, phone, password)
+        registerUserCall(name,email, phone, password)
     }
 
-    private fun registerUser(email: String, name: String, password: String , phone: String) {
-        mainViewModel.registerUser(UserRegister(email,  name, password, phone))
-      mainViewModel.registerResponse.observe(viewLifecycleOwner){
-          when(it){
-              is NetworkResult.Success -> {
-                  findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-              }
-              is NetworkResult.Error -> {
-                  Toast.makeText(requireActivity(), "Something went wrong", Toast.LENGTH_LONG).show()
-              }
-          }
-      }
+    private fun registerUserCall(name: String,email: String, phone: String, password: String) {
+            mainViewModel.registerUserCall(name, email, phone, password)
+
+            mainViewModel.registerResponse.observe(viewLifecycleOwner){
+               // findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+               //Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
+                Log.i("TAG", it.success.toString())
+            }
     }
+
+//    private fun registerUser(name: String,email: String, phone: String, password: String) {
+//     lifecycleScope.launch {
+//         mainViewModel.registerUser(UserRegister(name, email, phone, password))
+//
+//         mainViewModel.registerResponse.observe(viewLifecycleOwner){
+//             findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+//             //Toast.makeText(requireContext(), it.token, Toast.LENGTH_LONG).show()
+////             when(it){
+////                 is NetworkResult.Success -> {
+////                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+////                 }
+////                 is NetworkResult.Error -> {
+////                     Toast.makeText(requireActivity(), "Something went wrong", Toast.LENGTH_LONG).show()
+////                 }
+////             }
+//         }
+//     }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
