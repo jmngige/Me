@@ -42,8 +42,20 @@ class MainViewModel @Inject constructor(
                     val fetchedResponse = response.body()
                     registerResponse.value = fetchedResponse!!
                 }
-                else {
-                    registerResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<UserResponse>, error: Throwable) {
+            }
+
+        })
+    }
+
+    fun registerUserCall2(userRegister: UserRegister){
+        userRepository.registerUserCall2(userRegister).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if(response.isSuccessful){
+                    val fetchedResponse = response.body()
+                    registerResponse.value = fetchedResponse!!
                 }
             }
 

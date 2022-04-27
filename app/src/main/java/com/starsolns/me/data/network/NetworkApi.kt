@@ -28,4 +28,11 @@ interface NetworkApi {
         @Field("password") password: String
     ): Call<UserResponse>
 
+    @POST("/api/v1/user")
+    fun registerUserCall2(
+        @Body() userRegister: UserRegister
+    ): Call<UserResponse>
+
+
+
 }

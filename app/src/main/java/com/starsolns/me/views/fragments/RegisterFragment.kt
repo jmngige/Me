@@ -55,7 +55,8 @@ class RegisterFragment : Fragment() {
         }
         Log.i("TAG", "Button clicked")
         //registerUser(name,email, phone, password)
-        registerUserCall(name,email, phone, password)
+        //registerUserCall(name,email, phone, password)
+        registerUserCall2(name, email, phone, password)
     }
 
     private fun registerUserCall(name: String,email: String, phone: String, password: String) {
@@ -66,6 +67,16 @@ class RegisterFragment : Fragment() {
                //Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
                 Log.i("TAG", it.success.toString())
             }
+    }
+
+    private fun registerUserCall2(name: String,email: String, phone: String, password: String) {
+        mainViewModel.registerUserCall2(UserRegister(name, email, phone, password))
+
+        mainViewModel.registerResponse.observe(viewLifecycleOwner){
+            findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+            Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
+            Log.i("TAG", it.success.toString())
+        }
     }
 
 //    private fun registerUser(name: String,email: String, phone: String, password: String) {

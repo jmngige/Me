@@ -27,4 +27,8 @@ class UserRepository @Inject constructor(
         return networkApi.registerUserCall(name, email, phone, password)
     }
 
+    fun registerUserCall2(userRegister: UserRegister): Call<UserResponse>{
+        return networkApi.registerUserCall2(userRegister)
+    }
+
 }
