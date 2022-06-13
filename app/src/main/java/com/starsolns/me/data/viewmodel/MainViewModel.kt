@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.starsolns.me.data.repository.UserRepository
 import com.starsolns.me.model.UserRegister
 import com.starsolns.me.model.UserResponse
+import com.starsolns.me.model.Users
 import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
@@ -23,11 +24,23 @@ class MainViewModel @Inject constructor(
     //val registerResponse: MutableLiveData<NetworkResult<UserResponse>> = MutableLiveData()
     val registerResponse: MutableLiveData<UserResponse> = MutableLiveData()
 
+    val users: MutableLiveData<List<Users>> = MutableLiveData()
+
 
     suspend fun registerUser(userRegister: UserRegister) {
         try {
             val response = userRepository.registerUser(userRegister)
             registerResponse.value = response
+
+        }catch (e: Exception){
+
+        }
+    }
+
+    suspend fun getAllUsers(){
+        try {
+            val fetchedUsers = userRepository.getAllUsers()
+            users.value = fetchedUsers
 
         }catch (e: Exception){
 

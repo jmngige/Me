@@ -3,13 +3,11 @@ package com.starsolns.me.data.network
 import com.starsolns.me.model.UserLogin
 import com.starsolns.me.model.UserRegister
 import com.starsolns.me.model.UserResponse
+import com.starsolns.me.model.Users
 import com.starsolns.me.util.NetworkResult
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface NetworkApi {
 
@@ -49,6 +47,7 @@ interface NetworkApi {
         @Body() userRegister: UserRegister
     ): Call<UserResponse>
 
-
+    @GET("/api/v1/user")
+    fun getUsers(): List<Users>
 
 }

@@ -4,6 +4,7 @@ import com.starsolns.me.data.network.NetworkApi
 import com.starsolns.me.model.UserLogin
 import com.starsolns.me.model.UserRegister
 import com.starsolns.me.model.UserResponse
+import com.starsolns.me.model.Users
 import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import retrofit2.Call
@@ -25,6 +26,9 @@ class UserRepository @Inject constructor(
         return networkApi.registerUser(userRegister)
     }
 
+    suspend fun getAllUsers(): List<Users>{
+        return networkApi.getUsers()
+    }
 
     /** Using Callback Method*/
 
@@ -35,5 +39,7 @@ class UserRepository @Inject constructor(
     fun registerUserCall2(userRegister: UserRegister): Call<UserResponse>{
         return networkApi.registerUserCall2(userRegister)
     }
+
+
 
 }
