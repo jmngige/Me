@@ -3,12 +3,12 @@ package com.starsolns.me.data.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.starsolns.me.data.repository.UserRepository
-import com.starsolns.me.model.UserRegister
-import com.starsolns.me.model.UserResponse
-import com.starsolns.me.model.Users
+import com.starsolns.me.model.*
 import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +24,8 @@ class MainViewModel @Inject constructor(
     //val registerResponse: MutableLiveData<NetworkResult<UserResponse>> = MutableLiveData()
     val registerResponse: MutableLiveData<UserResponse> = MutableLiveData()
 
-    val users: MutableLiveData<List<Users>> = MutableLiveData()
+    val users: MutableLiveData<UsersResponse> = MutableLiveData()
+    val userProfile: MutableLiveData<MyProfileResponse> = MutableLiveData()
 
 
     suspend fun registerUser(userRegister: UserRegister) {
@@ -37,13 +38,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    suspend fun getAllUsers(){
-        try {
-            val fetchedUsers = userRepository.getAllUsers()
-            users.value = fetchedUsers
+    fun getAllUsers(){
+        viewModelScope.launch {
+            val response = userRepository.getAllUsers()
+            users.value = response
+        }
+    }
 
-        }catch (e: Exception){
-
+    fun getProfile(userId: String){
+        viewModelScope.launch {
+            userProfile.value = userRepository.getProfile(userId)
         }
     }
 

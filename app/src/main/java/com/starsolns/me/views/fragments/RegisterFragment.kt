@@ -65,7 +65,7 @@ class RegisterFragment : Fragment() {
             mainViewModel.registerUser(UserRegister(name, email, phone, password))
             mainViewModel.registerResponse.observe(viewLifecycleOwner){
                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
+               var token = it.token
                 Log.i("TAG", it.success.toString())
             }
         }
@@ -79,6 +79,7 @@ class RegisterFragment : Fragment() {
                // findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                //Toast.makeText(requireContext(), it.token.toString(), Toast.LENGTH_LONG).show()
                 Log.i("TAG", it.success.toString())
+
             }
     }
 

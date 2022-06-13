@@ -1,9 +1,6 @@
 package com.starsolns.me.data.network
 
-import com.starsolns.me.model.UserLogin
-import com.starsolns.me.model.UserRegister
-import com.starsolns.me.model.UserResponse
-import com.starsolns.me.model.Users
+import com.starsolns.me.model.*
 import com.starsolns.me.util.NetworkResult
 import retrofit2.Call
 import retrofit2.Response
@@ -21,6 +18,13 @@ interface NetworkApi {
 
     @POST("/api/v1/user")
     suspend fun registerUser(@Body userRegister: UserRegister): UserResponse
+
+    @GET("/api/v1/user")
+    suspend fun getUsers(): UsersResponse
+
+    @GET("/api/v1/user/{id}")
+    suspend fun getProfile(@Path("id") userId: String): MyProfileResponse
+
 
     /** Using Call Back Method*/
 
@@ -46,8 +50,5 @@ interface NetworkApi {
     fun registerUserCall2(
         @Body() userRegister: UserRegister
     ): Call<UserResponse>
-
-    @GET("/api/v1/user")
-    fun getUsers(): List<Users>
 
 }

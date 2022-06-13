@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.starsolns.me.databinding.UserItemLayoutBinding
 import com.starsolns.me.model.Users
+import com.starsolns.me.model.UsersResponse
 
 class UsersAdapter(
     private val context: Context,
@@ -42,7 +43,7 @@ class UsersAdapter(
         fun bind(user: Users){
             fullName.text = user.fullName
             email.text = user.email
-            phone.text = "${user.phone}"
+            phone.text = "0" + user.phone
             role.text = user.role
         }
 
