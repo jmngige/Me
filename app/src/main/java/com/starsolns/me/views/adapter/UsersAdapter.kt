@@ -9,8 +9,9 @@ import com.starsolns.me.model.Users
 
 class UsersAdapter(
     private val context: Context,
-    private val usersList: ArrayList<Users>
 ): RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
+
+    private var usersList = emptyList<Users>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersAdapter.ViewHolder {
         val customBinding: UserItemLayoutBinding = UserItemLayoutBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -24,6 +25,11 @@ class UsersAdapter(
 
     override fun getItemCount(): Int {
         return usersList.size
+    }
+
+    fun setData(newList: List<Users>){
+        this.usersList = newList
+        notifyDataSetChanged()
     }
 
     class ViewHolder(binding: UserItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
