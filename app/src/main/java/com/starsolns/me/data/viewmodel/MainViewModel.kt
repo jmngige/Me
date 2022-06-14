@@ -27,6 +27,8 @@ class MainViewModel @Inject constructor(
     val users: MutableLiveData<UsersResponse> = MutableLiveData()
     val userProfile: MutableLiveData<MyProfileResponse> = MutableLiveData()
 
+    val loading: MutableLiveData<Boolean> = MutableLiveData()
+
 
     suspend fun registerUser(userRegister: UserRegister) {
         try {
@@ -45,9 +47,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getProfile(userId: String){
+    fun getProfile(){
         viewModelScope.launch {
-            userProfile.value = userRepository.getProfile(userId)
+            loading.value = true
+            userProfile.value = userRepository.getProfile()
+            loading.value = false
         }
     }
 

@@ -1,5 +1,6 @@
 package com.starsolns.me.views.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.starsolns.me.R
 import com.starsolns.me.data.viewmodel.MainViewModel
 import com.starsolns.me.databinding.FragmentHomeBinding
+import com.starsolns.me.util.NotificationHelper
 import com.starsolns.me.views.adapter.UsersAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +26,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var usersAdapter: UsersAdapter
-    private lateinit var profileId: String
+    private var profileId: String = "620a9c721a39794dfdd69c60"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,15 +48,16 @@ class HomeFragment : Fragment() {
 
         mainViewModel.userProfile.observe(viewLifecycleOwner){profile->
             profile?.let {
-            profileId = profile.profileResponse.id
-            Toast.makeText(requireContext(), "Profile retrieved successfully", Toast.LENGTH_SHORT).show()
-            //Toast.makeText(requireContext(), profile.fullName, Toast.LENGTH_SHORT).show()
+               // Toast.makeText(requireContext(), it.profileResponse.fullName.toString(), Toast.LENGTH_SHORT).show()
             }
         }
 
 
         binding.profile.setOnClickListener {
-            mainViewModel.getProfile(profileId)
+            //findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            val myNotification = NotificationHelper(requireContext())
+            myNotification.createNotification("James", "james@gmail.com")
+
         }
 
         binding.usersListRv.layoutManager = LinearLayoutManager(requireActivity())

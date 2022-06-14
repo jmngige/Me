@@ -27,8 +27,8 @@ class UserRepository @Inject constructor(
         return networkApi.getUsers()
     }
 
-    suspend fun getProfile(userId: String): MyProfileResponse{
-        return networkApi.getProfile(userId)
+    suspend fun getProfile(): MyProfileResponse{
+        return networkApi.getProfile()
     }
 
     /** Using Callback Method*/

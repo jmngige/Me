@@ -22,8 +22,8 @@ interface NetworkApi {
     @GET("/api/v1/user")
     suspend fun getUsers(): UsersResponse
 
-    @GET("/api/v1/user/{id}")
-    suspend fun getProfile(@Path("id") userId: String): MyProfileResponse
+    @GET("/api/v1/user/profile")
+    suspend fun getProfile(): MyProfileResponse
 
 
     /** Using Call Back Method*/
