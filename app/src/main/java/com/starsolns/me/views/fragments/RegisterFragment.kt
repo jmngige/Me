@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.starsolns.me.R
+import com.starsolns.me.data.datastore.SessionManager
 import com.starsolns.me.data.viewmodel.MainViewModel
 import com.starsolns.me.databinding.FragmentRegisterBinding
 import com.starsolns.me.model.UserRegister
@@ -18,9 +19,12 @@ import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class RegisterFragment @Inject constructor(
+    private val sessionManager: SessionManager
+) : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
@@ -64,8 +68,10 @@ class RegisterFragment : Fragment() {
         lifecycleScope.launch {
             mainViewModel.registerUser(UserRegister(name, email, phone, password))
             mainViewModel.registerResponse.observe(viewLifecycleOwner){
-                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-               var token = it.token
+                lifecycleScope.launch(Dispatchers.IO) {
+                    sessionManager.saveToken(it.token)
+                }
+                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 Log.i("TAG", it.success.toString())
             }
         }
