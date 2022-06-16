@@ -62,12 +62,13 @@ class RegisterFragment() : Fragment() {
 
         if(name.isEmpty() or email.isEmpty() or phone.isEmpty() or password.isEmpty()){
             Toast.makeText(requireContext(), "Please fill all the blanks", Toast.LENGTH_LONG).show()
+        } else {
+            Log.i("TAG", "Button clicked")
+            //registerUser(name,email, phone, password)
+            //registerUserCall(name,email, phone, password)
+            //registerUserCall2(name, email, phone, password)
+            registerUser(name, email, phone, password)
         }
-        Log.i("TAG", "Button clicked")
-        //registerUser(name,email, phone, password)
-        //registerUserCall(name,email, phone, password)
-        //registerUserCall2(name, email, phone, password)
-        registerUser(name, email, phone, password)
     }
 
     private fun registerUser(name: String, email: String, phone: String, password: String) {

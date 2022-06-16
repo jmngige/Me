@@ -23,6 +23,7 @@ class UserRepository @Inject constructor(
         return networkApi.registerUser(userRegister)
     }
 
+
     suspend fun getAllUsers(): UsersResponse{
         return networkApi.getUsers()
     }

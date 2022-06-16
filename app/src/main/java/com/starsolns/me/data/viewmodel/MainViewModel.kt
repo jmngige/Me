@@ -24,8 +24,7 @@ class MainViewModel @Inject constructor(
     application: Application
 ): AndroidViewModel(application) {
 
-    val loginResponse: MutableLiveData<NetworkResult<UserResponse>> = MutableLiveData()
-    //val registerResponse: MutableLiveData<NetworkResult<UserResponse>> = MutableLiveData()
+    val loginResponse: MutableLiveData<UserResponse> = MutableLiveData()
     val registerResponse: MutableLiveData<UserResponse> = MutableLiveData()
 
     val users: MutableLiveData<UsersResponse> = MutableLiveData()
@@ -44,6 +43,13 @@ class MainViewModel @Inject constructor(
 
         }catch (e: Exception){
 
+        }
+    }
+
+    fun loginUser(userLogin: UserLogin){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = userRepository.loginUser(userLogin)
+            loginResponse.value = response
         }
     }
 
