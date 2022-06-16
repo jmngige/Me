@@ -3,11 +3,14 @@ package com.starsolns.me.data.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.starsolns.me.data.datastore.SessionManager
 import com.starsolns.me.data.repository.UserRepository
 import com.starsolns.me.model.*
 import com.starsolns.me.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val sessionManager: SessionManager,
     application: Application
 ): AndroidViewModel(application) {
 
@@ -26,6 +30,9 @@ class MainViewModel @Inject constructor(
 
     val users: MutableLiveData<UsersResponse> = MutableLiveData()
     val userProfile: MutableLiveData<MyProfileResponse> = MutableLiveData()
+
+    val readToken = sessionManager.readAccessToken.asLiveData()
+    val isLoggedIn = sessionManager.readIsLoggedIn.asLiveData()
 
     val loading: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -86,6 +93,18 @@ class MainViewModel @Inject constructor(
             }
 
         })
+    }
+
+    fun saveToken(token: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            sessionManager.saveToken(token)
+        }
+    }
+
+    fun setIsLoggedIn(isLogged: Boolean){
+        viewModelScope.launch {
+            sessionManager.isLoggedIn(isLogged)
+        }
     }
 
 

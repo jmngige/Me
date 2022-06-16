@@ -1,6 +1,8 @@
 package com.starsolns.me.views.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,14 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.starsolns.me.R
+import com.starsolns.me.data.datastore.SessionManager
 import com.starsolns.me.data.viewmodel.MainViewModel
 import com.starsolns.me.databinding.FragmentHomeBinding
 import com.starsolns.me.util.NotificationHelper
+import com.starsolns.me.util.Settings
 import com.starsolns.me.views.adapter.UsersAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
@@ -28,6 +35,9 @@ class HomeFragment : Fragment() {
     private lateinit var usersAdapter: UsersAdapter
     private var profileId: String = "620a9c721a39794dfdd69c60"
 
+    private lateinit var sessionManager: SessionManager
+    private lateinit var settings: Settings
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +47,7 @@ class HomeFragment : Fragment() {
 
         usersAdapter = UsersAdapter(requireContext())
 
+
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         mainViewModel.users.observe(viewLifecycleOwner){users->
             users?.let {
@@ -45,12 +56,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-
-        mainViewModel.userProfile.observe(viewLifecycleOwner){profile->
-            profile?.let {
-               // Toast.makeText(requireContext(), it.profileResponse.fullName.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
 
 
         binding.profile.setOnClickListener {

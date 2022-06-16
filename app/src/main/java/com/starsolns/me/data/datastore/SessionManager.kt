@@ -35,33 +35,19 @@ class SessionManager @Inject constructor(
     }
 
     val readAccessToken: Flow<String> = context.datastore.data
-        .catch { exception->
-            if(exception is IOException){
-                emit(emptyPreferences())
-            }else {
-                throw exception
-            }
-        }
         .map { Pref->
-            Pref[ACCESS_TOKEN] ?: ""
+            Pref[ACCESS_TOKEN] ?: "No token"
         }
 
     val readIsLoggedIn: Flow<Boolean> = context.datastore.data
-        .catch { exception->
-            if(exception is IOException){
-                emit(emptyPreferences())
-            }else {
-                throw exception
-            }
-        }
         .map { Pref->
             Pref[IS_LOGGED_IN] ?: false
         }
 
 
     companion object {
-        val ACCESS_TOKEN = stringPreferencesKey(Constants.ACCESS_TOKEN)
-        val IS_LOGGED_IN = booleanPreferencesKey(Constants.IS_LOGGED_IN)
+        val ACCESS_TOKEN = stringPreferencesKey(Constants.PREF_ACCESS_TOKEN)
+        val IS_LOGGED_IN = booleanPreferencesKey(Constants.PREF_IS_LOGGED_IN)
     }
 
 }

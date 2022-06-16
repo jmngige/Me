@@ -1,11 +1,13 @@
 package com.starsolns.me.di
 
+import android.content.Context
 import com.starsolns.me.data.network.NetworkApi
 import com.starsolns.me.data.network.OauthInterceptor
 import com.starsolns.me.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,11 +40,13 @@ object  NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttp(): OkHttpClient{
+    fun provideOkHttp(
+        @ApplicationContext context: Context
+    ): OkHttpClient{
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
-            .addInterceptor(OauthInterceptor("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMTNlNTBjZGI5ZmEwNDZmZmU5NWNhMyIsImlhdCI6MTY1NTExMzY5MSwiZXhwIjoxNjU1NzE4NDkxfQ.Uo-mZ_Y6vwE1td3G0WXH9Qkx92aHtlSDZBRfT-TWK10"))
+            .addInterceptor(OauthInterceptor(context))
             .addInterceptor(interceptor)
             .build()
     }

@@ -1,5 +1,7 @@
 package com.starsolns.me.views.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,20 +18,21 @@ import com.starsolns.me.data.viewmodel.MainViewModel
 import com.starsolns.me.databinding.FragmentRegisterBinding
 import com.starsolns.me.model.UserRegister
 import com.starsolns.me.util.NetworkResult
+import com.starsolns.me.util.Settings
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RegisterFragment @Inject constructor(
-    private val sessionManager: SessionManager
-) : Fragment() {
+class RegisterFragment() : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mainViewModel: MainViewModel
+
+    private lateinit var settings: Settings
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +42,9 @@ class RegisterFragment @Inject constructor(
         _binding = FragmentRegisterBinding.inflate(layoutInflater, container, false)
 
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
+        val pref: SharedPreferences = requireActivity().getSharedPreferences("me_prefs", Context.MODE_PRIVATE)
+        settings = Settings(pref)
 
         binding.register.setOnClickListener {
                validateInputs()
@@ -67,12 +73,12 @@ class RegisterFragment @Inject constructor(
     private fun registerUser(name: String, email: String, phone: String, password: String) {
         lifecycleScope.launch {
             mainViewModel.registerUser(UserRegister(name, email, phone, password))
+
             mainViewModel.registerResponse.observe(viewLifecycleOwner){
-                lifecycleScope.launch(Dispatchers.IO) {
-                    sessionManager.saveToken(it.token)
-                }
+                    settings.setBearerToken(it.token)
+                   // mainViewModel.setIsLoggedIn(true)
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                Log.i("TAG", it.success.toString())
+                Log.i("TAG", it.token)
             }
         }
     }
