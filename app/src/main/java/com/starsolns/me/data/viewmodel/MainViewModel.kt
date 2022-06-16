@@ -46,11 +46,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun loginUser(userLogin: UserLogin){
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun loginUser(userLogin: UserLogin){
+        try {
             val response = userRepository.loginUser(userLogin)
             loginResponse.value = response
-        }
+    }catch (e: Exception){
+
+    }
     }
 
     fun getAllUsers(){

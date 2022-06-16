@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.starsolns.me.R
 import com.starsolns.me.data.datastore.SessionManager
@@ -18,6 +19,7 @@ import com.starsolns.me.databinding.FragmentLoginBinding
 import com.starsolns.me.model.UserLogin
 import com.starsolns.me.util.Settings
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -69,9 +71,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginUser(email: String, password: String) {
+        lifecycleScope.launch {
         mainViewModel.loginUser(UserLogin(email, password))
         mainViewModel.loginResponse.observe(viewLifecycleOwner){
             settings.setBearerToken(it.token)
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        }
         }
     }
 
