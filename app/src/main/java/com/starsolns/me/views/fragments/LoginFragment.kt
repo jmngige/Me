@@ -1,5 +1,6 @@
 package com.starsolns.me.views.fragments
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -28,8 +29,25 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var settings: Settings
+    private lateinit var dialog: ProgressDialog
 
     private lateinit var mainViewModel: MainViewModel
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val pref: SharedPreferences =
+            requireActivity().getSharedPreferences("me_prefs", Context.MODE_PRIVATE)
+        settings = Settings(pref)
+        settings = Settings(pref)
+
+        val isLogged = settings.isLoggedIn()
+        if (isLogged) {
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,9 +89,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginUser(email: String, password: String) {
+        dialog = ProgressDialog(requireActivity())
+        dialog.setContentView(R.layout.progress_layout)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+
         lifecycleScope.launch {
         mainViewModel.loginUser(UserLogin(email, password))
         mainViewModel.loginResponse.observe(viewLifecycleOwner){
+            dialog.dismiss()
             settings.setBearerToken(it.token)
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
