@@ -90,9 +90,9 @@ class LoginFragment : Fragment() {
 
     private fun loginUser(email: String, password: String) {
         dialog = ProgressDialog(requireActivity())
+        dialog.show()
         dialog.setContentView(R.layout.progress_layout)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.show()
 
         lifecycleScope.launch {
         mainViewModel.loginUser(UserLogin(email, password))
