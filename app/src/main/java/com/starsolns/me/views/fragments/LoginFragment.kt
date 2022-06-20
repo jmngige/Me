@@ -64,8 +64,6 @@ class LoginFragment : Fragment() {
         val pref: SharedPreferences = requireActivity().getSharedPreferences("me_prefs", Context.MODE_PRIVATE)
         settings = Settings(pref)
 
-        Toast.makeText(requireContext(), settings.getBearerToken(), Toast.LENGTH_LONG).show()
-
 
         binding.login.setOnClickListener {
             validateInputsAndLogin()
@@ -99,6 +97,7 @@ class LoginFragment : Fragment() {
         mainViewModel.loginResponse.observe(viewLifecycleOwner){
             dialog.dismiss()
             settings.setBearerToken(it.token)
+            settings.setIsLoggedIn(true)
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
         }

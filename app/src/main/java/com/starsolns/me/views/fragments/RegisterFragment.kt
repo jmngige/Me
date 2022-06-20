@@ -1,5 +1,6 @@
 package com.starsolns.me.views.fragments
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -33,6 +34,7 @@ class RegisterFragment() : Fragment() {
     private lateinit var mainViewModel: MainViewModel
 
     private lateinit var settings: Settings
+    private lateinit var dialog: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,13 +74,18 @@ class RegisterFragment() : Fragment() {
     }
 
     private fun registerUser(name: String, email: String, phone: String, password: String) {
+        dialog = ProgressDialog(requireActivity())
+        dialog.show()
+        dialog.setContentView(R.layout.progress_layout)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         lifecycleScope.launch {
             mainViewModel.registerUser(UserRegister(name, email, phone, password))
 
             mainViewModel.registerResponse.observe(viewLifecycleOwner){
                     settings.setBearerToken(it.token)
-                   // mainViewModel.setIsLoggedIn(true)
+                    settings.setIsLoggedIn(true)
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                dialog.dismiss()
                 Log.i("TAG", it.token)
             }
         }

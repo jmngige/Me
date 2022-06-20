@@ -13,20 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="533dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Please wait..."
-        android:textColor="@color/teal_700"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/login_progress_bar"
-        app:layout_constraintHorizontal_bias="0.744"
-        app:layout_constraintStart_toStartOf="@+id/login_progress_bar"
-        app:layout_constraintTop_toBottomOf="@+id/login_progress_bar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/progress_guideline"
